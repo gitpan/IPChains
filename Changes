@@ -16,3 +16,5 @@
 7.5.99 Added user contributed patch with bug fixes for attribute(),
        list_chains(), and misc bugs. Thanks to Francis J. Lacoste 
        <francis.lacoste@iNsu.COM>.
+
+4.7.02 Added support for RedirectPort (ie, -j REDIRECT) -jon

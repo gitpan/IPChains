@@ -8,6 +8,16 @@ README.ipchains for the README that was included with the
 original source code for ipchains and contains copyrights and
 credits for such. 
 
+Copyright (c) 2002 Jonathan Schatz. All rights reserved.
+This package is free software; you can redistribute it and/or
+modify it under the same terms as Perl itself (see LICENSE),
+with the exception of the libipfwc.c, ipchains.c, and the files
+in include/ which  have separate terms derived from those of
+the original ipchains sources (see LICENSE.ipchains). Please see
+README.ipchains for the README that was included with the
+original source code for ipchains and contains copyrights and
+credits for such. 
+
 For the full original source code, documentation and other 
 information related to the ipchains project please see 
 http://www.rustcorp.com/linux/ipchains/. The Ipfw.pm module is 
@@ -15,9 +25,9 @@ a seperate entity from such, so please do not bother the author
 of the ipchains source with issues related to this module.
 
 For the most current version of this module please see
-http://www.x25.org/ipchains.html. For more information about the 
+http://www.divisionbyzero.com/code/. For more information about the 
 module, or to submit questions, comments, or bug reports about 
-such, please email j@x25.org.
+such, please email bluelines@divisionbyzeor.com
 
 -----------------------------------------------------------------
 
@@ -31,6 +41,7 @@ To use this module you'll need to have several features enabled
 in your kernel. From the ipchains README:
 
 --
+This module will not (yet) work with the 2.3.x or 2.4.x kernel series.
 
 If your kernel version is before 2.1.102; you need the ipfwchains
 patch to the 2.1.x or 2.0.x kernel series.

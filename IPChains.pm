@@ -6,7 +6,7 @@ package IPChainsc;
 bootstrap IPChains;
 var_IPChains_init();
 @EXPORT = qw();
-$VERSION = 1.0;
+$VERSION = 0.6;
 
 # ---------- BASE METHODS -------------
 
@@ -73,7 +73,8 @@ sub new {
 		"Mark"		=>	$args{Mark},		# takes "mark value"
 		"Exact"		=>	$args{Exact},		# bool - for L
 		"SYN"		=>	$args{SYN},		# bool, accepts !
-		"TOS"		=>	$args{TOS}
+		"TOS"		=>	$args{TOS},
+	        "RedirectPort"  =>      $args{RedirectPort}     #redirect port
 		}, $self;
 }
 
@@ -139,7 +140,11 @@ sub set_opts {
 	    
 	# "Jump" rule
 	if (defined($self->{Rule})) {
-		push(@opts, "-j", "$self->{Rule}");	
+	       if (($self->{Rule} eq "REDIRECT" ) and (defined($self->{RedirectPort}))) {
+                       push(@opts, "-j", "$self->{Rule}", "$self->{RedirectPort}");
+               } else {	    
+		       push(@opts, "-j", "$self->{Rule}");	
+		       }
 	}
 	if (defined($self->{Interface})) {
 		push(@opts, "-i", "$self->{Interface}");
@@ -337,6 +342,10 @@ Destination address, (see SourceMask).
 
 Destination Port, (see SourcePort).
 
+=item B<RedirectPort>
+
+Specifies the (local) port to redirect to if you are using the REDIRECT rule.
+
 =item B<Prot>
 
 Protocol. Can be tcp, udp, icmp, or all. Required for specifying specific port(s).
@@ -521,8 +530,22 @@ To list current rules in "input" chain to stdout (without parsing through /proc/
  $fw = IPChains->new(Verbose => 1);
  $fw->list("input");
 
+To forward all tcp traffic destined to port 80 to port 3000 instead (this is
+useful for transparently forwarding traffic to a cache):
+
+  use IPChains;
+
+  $fw = IPChains->new(Source       => "0.0.0.0/0",
+                      Destination  => "0.0.0.0/0",
+                      DestPort     => "80",
+                      Interface    => "eth0",
+                      Rule         => "REDIRECT",
+                      RedirectPort => "3000"
+                      );
+  $fw->append("input");
+
 To create a rule that would allow all traffic on an internal lan, and deny
-all tcp traffic from external hosts on relevant ports, and log it,you could 
+all tcp traffic from external hosts on relevant ports, and log it,you could
 use something like:
 
  use IPChains;
